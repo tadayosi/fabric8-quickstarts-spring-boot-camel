@@ -34,8 +34,13 @@ public class Application extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("timer://foo?period=5000")
-            .setBody().constant("Hello World")
-            .log(">>> ${body}");
+        int size = 500;
+
+        for (int i = 0; i < size; i++) {
+            fromF("timer://foo%s?period=5000", i)
+                .routeId("foo" + i)
+                .setBody().constant("Hello World")
+                .log(">>> ${body}");
+        }
     }
 }
